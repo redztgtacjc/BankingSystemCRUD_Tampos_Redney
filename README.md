@@ -1,67 +1,67 @@
-# Simple Banking Application with CRUD Operations
+# 🏦 Simple Banking Application
 
-A Java Swing desktop application designed to manage bank customer profiles, open multi-tier accounts, perform real-time transactions, and record historical log traces securely using a MySQL backend engine.
-
-Developed as a laboratory requirement for Engineering Mathematics and Structured Data Management applications.
+A clean, easy-to-use desktop banking application built using Java Swing (for the visual windows) and MySQL (to save the data). This system allows bank staff to manage customer profiles, open savings or current accounts, make deposits/withdrawals, and review historical activity logs.
 
 ---
 
-## 📌 System Description
+## 👀 What This System Does (System Description)
 
-The Simple Banking Application functions as an automated bank accounting system. It consolidates two core domains of a retail bank: **Account Management** and **Transaction Processing**. 
+Think of this app as a digital teller dashboard. It connects two main tasks: keeping track of who your customers are, and processing their money securely.
 
-Through a centralized interface dashboard, users can perform the following:
-* **Customer Registry:** Add new client profiles into the system.
-* **Account Provisioning:** Open accounts (Savings or Current) with initial balance fields.
-* **Full CRUD Pipeline:** Read real-time accounts on a data table, edit profile names, and delete/close closed entries.
-* **Dynamic Search engine:** Filter the active database instantly by typing customer names or direct Account IDs.
-* **Transaction Engine:** Run Deposits and Withdrawals that instantly update account balances while rejecting overdraft attempts with "Insufficient Balance" warning panels.
-* **Audit Logs:** View a chronological database window of all historical actions executed across the system.
-
----
-
-## 📊 ERD Explanation & Structural Relationships
-
-The system relies on a relational database architecture composed of three normalized tables. The layout maps out strict structural dependencies to ensure information consistency:
-
-
-
-### 1. Entity Definitions
-* **Customer Table:** Stores unique personal identity keys (`customer_id` [Primary Key], `first_name`, `last_name`, `email`, `phone_number`).
-* **Account Table:** Manages financial asset balances (`account_id` [Primary Key], `customer_id` [Foreign Key], `account_type`, `balance`).
-* **Transaction Table:** Logs ledger changes sequentially (`transaction_id` [Primary Key], `account_id` [Foreign Key], `transaction_type`, `amount`, `transaction_date`).
-
-### 2. Relationship Cardinality
-* **One Customer → Many Accounts:** A single customer profile can own multiple separate bank accounts (e.g., matching both a Savings and a Current account string). However, every account records an identity loop back to exactly one primary customer key.
-* **One Account → Many Transactions:** A single bank account can accumulate an endless list of historical deposit or withdrawal entries over time. Every transaction record links back directly to the parent account that initiated the move.
-
-> ⚠️ **Database Guardrail:** Tables are established using `ON DELETE CASCADE` constraints. If an account is dropped from the registry, its entire transactional history record is wiped simultaneously to maintain system efficiency.
+Here is what you can do with it:
+* **Create New Accounts:** Type in a customer's name, email, phone number, choose an account type (Savings or Current), and set a starting balance.
+* **View & Edit profiles:** All active accounts appear on a big spreadsheet grid. If a customer changes their phone number or name, you can click their row, fix the info, and save it instantly.
+* **Delete / Close Accounts:** If someone wants to close their account, you select it and hit delete. It wipes their data cleanly so no ghost profiles stay in the system.
+* **Smart Search Bar:** Instead of scrolling through hundreds of names, you can type a customer’s name or their Account ID into the search bar to filter the list instantly.
+* **Deposit & Withdraw Cash:** Switch to the transaction window, enter an Account ID, and add or subtract money. 
+* **Safety Controls:** If a customer has ₱5,000 in their account and tries to withdraw ₱10,000, the system automatically blocks the move and shows an "Insufficient Balance" warning popup.
+* **Transaction Ledger:** Every single deposit and withdrawal is logged with an exact timestamp so you can track where the money went.
 
 ---
 
-## 💻 How to Run the Program
+## 📊 How the Database is Structured (ERD Explanation)
 
-Follow these steps to deploy and run the application on your local workspace environment:
+The database behind this app uses three simple tables that link together like pieces of a puzzle. 
+
+
+
+* **Customer Table:** Stores the human details (First Name, Last Name, Email, Phone).
+* **Account Table:** Stores the money details (Account ID, Account Type, Balance). It links to the Customer table because an account needs an owner. One customer can open multiple accounts (like a Savings account *and* a Current account).
+* **Transaction Table:** Stores the movement history (Transaction ID, Type, Amount, Date). It links to the Account table so we know exactly which account made the move. One account can have many transaction history rows.
+
+> 🛡️ **Data Cleanup:** We use a rule called `ON DELETE CASCADE`. This means if you delete a customer's profile, the system automatically deletes their bank accounts and transaction history, keeping the database neat and clean.
+
+---
+
+## 🚀 How to Run the Program
+
+Follow these easy steps to launch the app on your computer using **Apache NetBeans** and your local **MySQL** server:
 
 ### Prerequisites
-1. **Java Development Kit (JDK):** Version 11 or higher installed.
-2. **IDE:** Apache NetBeans (Version 12 or above).
-3. **Database:** Standalone MySQL Server Instance running on port `3306`.
+1. Have **Java** and **Apache NetBeans** installed.
+2. Have your local **MySQL Server** instance active and running.
 
-### Step 1: Database Construction
-1. Open your database management panel (**MySQL Workbench**).
-2. Create a new SQL query tab, paste your database schema script, and execute it.
-3. Confirm that the `banking_db` schema is active alongside its three tables (`Customer`, `Account`, `Transaction`).
+### Step 1: Create the Database
+1. Open your database management program (like **MySQL Workbench**).
+2. Open a new query tab, paste your SQL table creation script inside, and hit the **Lightning Bolt (Execute)** icon.
+3. Refresh your sidebar to make sure the database `banking_db` pops up.
 
-### Step 2: Open Project in Apache NetBeans
-1. Launch **Apache NetBeans**.
-2. Navigate to **File > Open Project...**
-3. Select the root directory folder named `BankingSystemCRUD_LastName_FirstName` and click **Open**.
+### Step 2: Open the Project in NetBeans
+1. Open **Apache NetBeans**.
+2. Go to the top left menu: **File > Open Project...**
+3. Select your project folder (`BankingSystemCRUD_LastName_FirstName`) and click **Open**.
 
-### Step 3: Configure Database Credentials
-1. Expand your source files, navigate to the `config` package, and open `DatabaseConnection.java`.
-2. Edit the connection string constants to match your personal MySQL setup:
-   ```java
-   private static final String URL = "jdbc:mysql://localhost:3306/banking_db";
-   private static final String USER = "root";
-   private static final String PASSWORD = "YOUR_PERSONAL_MYSQL_PASSWORD";
+### Step 3: Put in Your Database Password
+1. In the NetBeans project navigator on the left, expand your source files.
+2. Go into the `config` package and open **`DatabaseConnection.java`**.
+3. Look for the line that says `private static final String PASSWORD = "...";` and change the text inside the quotation marks to match your personal MySQL database password.
+
+### Step 4: Add the MySQL Connector Driver
+1. In the NetBeans left sidebar, right-click the **Libraries** folder inside your project tree.
+2. Click **Add Library...**
+3. Scroll down the popup menu, select **MySQL JDBC Driver**, and click **Add Library**. (This acts as the bridge connecting your Java windows to your SQL tables).
+
+### Step 5: Click Run!
+1. Expand the `ui` package folder inside NetBeans.
+2. Right-click on **`MainDashboard.java`** and click **Run File** (or press **Shift + F6**).
+3. The main control panel will open up on your screen. You can now freely click around to manage accounts and make transactions!
