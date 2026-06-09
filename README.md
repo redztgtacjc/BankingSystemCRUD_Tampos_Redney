@@ -1,60 +1,67 @@
-# Banking System CRUD Application
+# Simple Banking Application with CRUD Operations
 
-An intuitive Java Swing desktop application designed for streamlined bank customer management, account creation, and secure transaction logging. This system implements full CRUD operations, conditional transaction validations, and real-world relational database architectures using a MySQL backend engine.
+A Java Swing desktop application designed to manage bank customer profiles, open multi-tier accounts, perform real-time transactions, and record historical log traces securely using a MySQL backend engine.
 
-Developed as a standard academic laboratory project for Engineering Mathematics and Structured Programming applications.
-
----
-
-## 📌 Features
-
-### 1. Customer & Account Management
-* **Create (Add):** Dynamically registers new bank customer profiles and opens a corresponding bank account (Savings or Current) under a unified transaction block.
-* **Read (View):** Displays comprehensive multi-table account and profile data sets dynamically on a structured interface spreadsheet.
-* **Update:** Modifies active customer profile parameters and account classifications seamlessly.
-* **Delete:** Closes active accounts and cleans up linked profile traces using cascading database rules.
-* **Search Infrastructure:** Filters complex dataset registers instantly by parsing Customer Names or unique Account IDs.
-
-### 2. Transaction Processing Hub
-* **Deposits:** Multiplies active account ledger assets securely with automated mathematical state balances.
-* **Withdrawals:** Validates financial constraints instantly, preventing account overdraft operations via programmatic asset balance evaluations.
-* **Historical Audits:** Logs chronological transaction records permanently into data storage structures.
+Developed as a laboratory requirement for Engineering Mathematics and Structured Data Management applications.
 
 ---
 
-## 🛠️ Database Design & ERD Explanation
+## 📌 System Description
 
-The application relies on a **One-to-Many (1:N)** relational architecture mapped across three main normalized entities:
+The Simple Banking Application functions as an automated bank accounting system. It consolidates two core domains of a retail bank: **Account Management** and **Transaction Processing**. 
 
-1. **Customer Table:** Holds structural identity metadata (`customer_id` [PK], `first_name`, `last_name`, `email`, `phone_number`).
-2. **Account Table:** Tracks specific bank holdings (`account_id` [PK], `customer_id` [FK], `account_type`, `balance`). 
-   * *Relationship:* One Customer can own multiple distinct Bank Accounts (**One-to-Many**).
-3. **Transaction Table:** Archives chronological account activities (`transaction_id` [PK], `account_id` [FK], `transaction_type`, `amount`, `transaction_date`).
-   * *Relationship:* One Account can generate an infinite array of historical logs (**One-to-Many**).
-
-> ⚠️ **Data Integrity Safeguard:** Tables are linked using `ON DELETE CASCADE` rules. Removing an account automatically purges associated transactional records, preventing orphaned database links.
+Through a centralized interface dashboard, users can perform the following:
+* **Customer Registry:** Add new client profiles into the system.
+* **Account Provisioning:** Open accounts (Savings or Current) with initial balance fields.
+* **Full CRUD Pipeline:** Read real-time accounts on a data table, edit profile names, and delete/close closed entries.
+* **Dynamic Search engine:** Filter the active database instantly by typing customer names or direct Account IDs.
+* **Transaction Engine:** Run Deposits and Withdrawals that instantly update account balances while rejecting overdraft attempts with "Insufficient Balance" warning panels.
+* **Audit Logs:** View a chronological database window of all historical actions executed across the system.
 
 ---
 
-## 💻 How to Setup and Run
+## 📊 ERD Explanation & Structural Relationships
+
+The system relies on a relational database architecture composed of three normalized tables. The layout maps out strict structural dependencies to ensure information consistency:
+
+
+
+### 1. Entity Definitions
+* **Customer Table:** Stores unique personal identity keys (`customer_id` [Primary Key], `first_name`, `last_name`, `email`, `phone_number`).
+* **Account Table:** Manages financial asset balances (`account_id` [Primary Key], `customer_id` [Foreign Key], `account_type`, `balance`).
+* **Transaction Table:** Logs ledger changes sequentially (`transaction_id` [Primary Key], `account_id` [Foreign Key], `transaction_type`, `amount`, `transaction_date`).
+
+### 2. Relationship Cardinality
+* **One Customer → Many Accounts:** A single customer profile can own multiple separate bank accounts (e.g., matching both a Savings and a Current account string). However, every account records an identity loop back to exactly one primary customer key.
+* **One Account → Many Transactions:** A single bank account can accumulate an endless list of historical deposit or withdrawal entries over time. Every transaction record links back directly to the parent account that initiated the move.
+
+> ⚠️ **Database Guardrail:** Tables are established using `ON DELETE CASCADE` constraints. If an account is dropped from the registry, its entire transactional history record is wiped simultaneously to maintain system efficiency.
+
+---
+
+## 💻 How to Run the Program
+
+Follow these steps to deploy and run the application on your local workspace environment:
 
 ### Prerequisites
-* **Java Development Kit (JDK):** Version 11 or higher.
-* **IDE:** Apache NetBeans (Version 12+ recommended).
-* **Database Engine:** MySQL Server Instance (Standalone installer or via XAMPP).
+1. **Java Development Kit (JDK):** Version 11 or higher installed.
+2. **IDE:** Apache NetBeans (Version 12 or above).
+3. **Database:** Standalone MySQL Server Instance running on port `3306`.
 
-### Step 1: Database Setup
-1. Launch your MySQL Server administration tool (e.g., **MySQL Workbench**).
-2. Open a new SQL script tab, paste the setup script found inside your database configuration file, and execute it.
-3. Verify that `banking_db` is compiled successfully along with its 3 tables (`Customer`, `Account`, `Transaction`).
+### Step 1: Database Construction
+1. Open your database management panel (**MySQL Workbench**).
+2. Create a new SQL query tab, paste your database schema script, and execute it.
+3. Confirm that the `banking_db` schema is active alongside its three tables (`Customer`, `Account`, `Transaction`).
 
 ### Step 2: Open Project in Apache NetBeans
-1. Open **Apache NetBeans**.
-2. Click **File > Open Project...**
-3. Navigate to the directory where this repository was cloned and select `BankingSystemCRUD_LastName_FirstName`.
+1. Launch **Apache NetBeans**.
+2. Navigate to **File > Open Project...**
+3. Select the root directory folder named `BankingSystemCRUD_LastName_FirstName` and click **Open**.
 
 ### Step 3: Configure Database Credentials
-1. Navigate to the `config` package and open `DatabaseConnection.java`.
-2. Modify the `PASSWORD` string constant to match your local MySQL configuration password:
+1. Expand your source files, navigate to the `config` package, and open `DatabaseConnection.java`.
+2. Edit the connection string constants to match your personal MySQL setup:
    ```java
-   private static final String PASSWORD = "YOUR_ACTUAL_DATABASE_PASSWORD";
+   private static final String URL = "jdbc:mysql://localhost:3306/banking_db";
+   private static final String USER = "root";
+   private static final String PASSWORD = "YOUR_PERSONAL_MYSQL_PASSWORD";
